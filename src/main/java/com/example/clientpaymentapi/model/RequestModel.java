@@ -23,6 +23,9 @@ public class RequestModel {
     @NotNull
     private Double amountOfPayment;
     private LocalDate dateOfPayment;
+    private Date fromDate;
+    private Date toDate;
+
 
 
 }

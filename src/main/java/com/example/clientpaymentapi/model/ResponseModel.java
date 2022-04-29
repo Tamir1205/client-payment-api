@@ -19,5 +19,6 @@ public class ResponseModel {
     private String paymentDescription;
     private Double amountOfPayment;
     private LocalDate dateOfPayment;
-
+//    private Date toDate;
+//    private Date fromDate;
 }

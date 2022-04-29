@@ -6,20 +6,19 @@ import com.example.clientpaymentapi.repository.PaymentEntity;
 import com.example.clientpaymentapi.repository.PaymentRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.springframework.data.elasticsearch.annotations.DateFormat.date;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -47,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentEntity paymentEntity = modelMapper.map(requestModel, PaymentEntity.class);
         PaymentEntity dbEntity = paymentRepository.getPaymentEntitiesByPaymentId(paymentEntity.getPaymentId());
         paymentEntity.setPaymentId(dbEntity.getPaymentId());
-        paymentEntity=paymentRepository.save(paymentEntity);
+        paymentEntity = paymentRepository.save(paymentEntity);
 
         return modelMapper.map(paymentEntity, ResponseModel.class);
     }
@@ -62,8 +61,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public ResponseModel getPaymentByPayerId(String payerId) {
-        PaymentEntity paymentEntity= paymentRepository.getPaymentEntitiesByPayerId(payerId);
-        return modelMapper.map(paymentEntity,ResponseModel.class);
+        PaymentEntity paymentEntity = paymentRepository.getPaymentEntitiesByPayerId(payerId);
+        return modelMapper.map(paymentEntity, ResponseModel.class);
     }
 
     @Override
@@ -89,8 +88,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Page<ResponseModel> countPaymentsByPayerId(String payerId, Pageable pageable) {
-        return paymentRepository.countPaymentEntitiesByPayerId(payerId,pageable).
-                map(paymentEntity -> modelMapper.map(paymentEntity,ResponseModel.class));
+        paymentRepository.count();
+        return paymentRepository.countPaymentEntitiesByPayerId(payerId, pageable).
+                map(paymentEntity -> modelMapper.map(paymentEntity, ResponseModel.class));
     }
 
     @Override
@@ -98,6 +98,21 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.getPaymentEntitiesByReceiverId(receiverId, pageable).
                 map(paymentEntity -> modelMapper.map(paymentEntity, ResponseModel.class));
     }
+
+    @Override
+    public Page<ResponseModel> getPaymentsByRange(Date fromDate, Date toDate, String payerId, Pageable pageable) {
+
+        return paymentRepository.getPaymentEntitiesByDateOfPaymentIsBetween(fromDate, toDate, payerId, pageable);
+    }
+
+//    @Override
+//    public Page<ResponseModel> getPaymentsByRangeOfDates( String payerId, Pageable pageable,Date fromDate, Date toDate,LocalDate dateOfPayment) {
+////        Criteria criteria=new Criteria("fromDate").greaterThan(fromDate).and("toDate").lessThan(toDate);
+////        Query query=new CriteriaQuery(criteria);
+//        return paymentRepository.getPaymentEntitiesByDateOfPaymentIsBetween(payerId,fromDate,toDate,pageable,dateOfPayment).map(paymentEntity ->
+//                modelMapper.map(paymentEntity,ResponseModel.class));
+//    }
+
 
 //    @Override
 //    public Page<ResponseModel> getPaymentEntitiesByPayerIdAndFromDateBetween(Date fromDate, Date toDate, Pageable pageable, String payerId) {
