@@ -1,21 +1,16 @@
 package com.example.clientpaymentapi.controller;
 
+import com.example.clientpaymentapi.feign.ClientFeign;
+import com.example.clientpaymentapi.model.DetailedResponse;
 import com.example.clientpaymentapi.model.RequestModel;
 import com.example.clientpaymentapi.model.ResponseModel;
 import com.example.clientpaymentapi.service.PaymentService;
-import org.apache.lucene.util.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +22,8 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private ClientFeign clientFeign;
 
     @PostMapping
     public ResponseModel createPayment(@RequestBody RequestModel requestModel) {
@@ -50,8 +47,21 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseModel getPaymentByPayerId(@RequestParam String payerId) {
-        return paymentService.getPaymentByPayerId(payerId);
+    public ResponseModel getPaymentByPayerId(@RequestParam String clientId) {
+        return paymentService.getPaymentByClientId(clientId);
+    }
+    @GetMapping("/detail/{id}")
+    public DetailedResponse getDetailPaymentById(@PathVariable String id){
+    DetailedResponse detailedResponse=new DetailedResponse();
+    ResponseModel responseModel=paymentService.getPaymentById(id);
+    detailedResponse.setPaymentId(responseModel.getPaymentId());
+    detailedResponse.setClient(clientFeign.getClientById(responseModel.getClientId()));
+    detailedResponse.setDateOfPayment(responseModel.getDateOfPayment());
+    detailedResponse.setPaymentType(responseModel.getPaymentType());
+    detailedResponse.setReceiverId(responseModel.getReceiverId());
+    detailedResponse.setPaymentDescription(responseModel.getPaymentDescription());
+    detailedResponse.setAmountOfPayment(responseModel.getAmountOfPayment());
+    return detailedResponse;
     }
 
 //    @GetMapping("/date")
@@ -65,8 +75,8 @@ public class PaymentController {
     }
 
     @GetMapping("/count")
-    public Page<ResponseModel> countPaymentByPayerId(@RequestParam String payerId, Pageable pageable) {
-        return paymentService.countPaymentsByPayerId(payerId, pageable);
+    public Page<ResponseModel> countPaymentByPayerId(@RequestParam String clientId, Pageable pageable) {
+        return paymentService.countPaymentsByClientId(clientId, pageable);
     }
 
     @GetMapping("/all")

@@ -16,7 +16,7 @@ import java.util.Locale;
 @Repository
 public interface PaymentRepository extends ElasticsearchRepository<PaymentEntity, String> {
     // Page<PaymentEntity> getPaymentEntitiesByDateOfPayment(Date dateOfPayment, Pageable pageable);
-    Page<PaymentEntity> countPaymentEntitiesByPayerId(String payerId, Pageable pageable);
+    Page<PaymentEntity> countPaymentEntitiesByClientId(String clientId, Pageable pageable);
 
     Page<PaymentEntity> getPaymentEntitiesByReceiverId(String receiverId, Pageable pageable);
 
@@ -24,7 +24,7 @@ public interface PaymentRepository extends ElasticsearchRepository<PaymentEntity
 
     PaymentEntity getPaymentEntitiesByPaymentId(String paymentId);
 
-    PaymentEntity getPaymentEntitiesByPayerId(String payerId);
+    PaymentEntity getPaymentEntitiesByClientId(String clientId);
 
     List<PaymentEntity> getPaymentEntitiesBy();
 

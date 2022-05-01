@@ -20,7 +20,7 @@ public class PaymentEntity {
     @Field(type= FieldType.Keyword)
     private String paymentId;
     @Field(type= FieldType.Keyword)
-    private String payerId;
+    private String clientId;
     @Field(type= FieldType.Keyword)
     private String receiverId;
     @Field(type= FieldType.Text)

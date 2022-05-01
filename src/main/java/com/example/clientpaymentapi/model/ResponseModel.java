@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ResponseModel {
     private String paymentId;
-    private String payerId;
+    private String clientId;
     private String receiverId;
     private String paymentType;
     private String paymentDescription;

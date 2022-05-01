@@ -60,8 +60,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponseModel getPaymentByPayerId(String payerId) {
-        PaymentEntity paymentEntity = paymentRepository.getPaymentEntitiesByPayerId(payerId);
+    public ResponseModel getPaymentByClientId(String clientId) {
+        PaymentEntity paymentEntity = paymentRepository.getPaymentEntitiesByClientId(clientId);
         return modelMapper.map(paymentEntity, ResponseModel.class);
     }
 
@@ -87,9 +87,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public Page<ResponseModel> countPaymentsByPayerId(String payerId, Pageable pageable) {
+    public Page<ResponseModel> countPaymentsByClientId(String clientId, Pageable pageable) {
         paymentRepository.count();
-        return paymentRepository.countPaymentEntitiesByPayerId(payerId, pageable).
+        return paymentRepository.countPaymentEntitiesByClientId(clientId, pageable).
                 map(paymentEntity -> modelMapper.map(paymentEntity, ResponseModel.class));
     }
 
