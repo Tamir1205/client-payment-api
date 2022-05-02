@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,12 +32,6 @@ public class PaymentServiceImpl implements PaymentService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
     }
-//    public List<ResponseModel> search(final DTO dto){
-//        final SearchRequest request=SearchUtil.buildSearchRequest(
-//                INDICES.PaymentEntity,dto
-//        );
-//        return search(request);
-//    }
 
 
     @Override
@@ -82,12 +75,6 @@ public class PaymentServiceImpl implements PaymentService {
                 modelMapper.map(paymentEntity, ResponseModel.class)).collect(Collectors.toList());
     }
 
-//    @Override
-//    public Page<ResponseModel> getTotalAmountOfPaymentsByClientId(String clientId,Pageable pageable,Double amountOfPayment) {
-//        Page<PaymentEntity> paymentEntity=paymentRepository.countPaymentEntitiesByClientId(clientId,pageable);
-//        paymentEntity.get().cc
-//        return null;
-//    }
 
 
     @Override
@@ -95,13 +82,6 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.deletePaymentEntitiesByPaymentId(paymentId);
     }
 
-//    @Override
-//    public Page<ResponseModel> getPaymentByDateOfPayment(Date dateOfPayment, Pageable pageable) {
-//   return paymentRepository.getPaymentEntitiesByDateOfPayment(dateOfPayment,pageable).
-//           map(paymentEntity ->
-//            modelMapper.map(paymentEntity,ResponseModel.class));
-//
-//    }
 
 
     @Override
@@ -118,24 +98,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Page<ResponseModel> getPaymentsByRange(Date fromDate, Date toDate, String payerId, Pageable pageable) {
-        return paymentRepository.getPaymentEntitiesByFromDateAfterAndToDateBefore(fromDate, toDate, payerId, pageable);
+    public List<PaymentEntity> getPaymentsByRange(LocalDate fromDate, LocalDate toDate, String clientId) {
+        return paymentRepository.findByDateOfPaymentGreaterThanEqualAndDateOfPaymentLessThanEqualAndClientId(fromDate, toDate, clientId);
     }
 
-//    @Override
-//    public Page<ResponseModel> getPaymentsByRangeOfDates( String payerId, Pageable pageable,Date fromDate, Date toDate,LocalDate dateOfPayment) {
-////        Criteria criteria=new Criteria("fromDate").greaterThan(fromDate).and("toDate").lessThan(toDate);
-////        Query query=new CriteriaQuery(criteria);
-//        return paymentRepository.getPaymentEntitiesByDateOfPaymentIsBetween(payerId,fromDate,toDate,pageable,dateOfPayment).map(paymentEntity ->
-//                modelMapper.map(paymentEntity,ResponseModel.class));
-//    }
 
-
-//    @Override
-//    public Page<ResponseModel> getPaymentEntitiesByPayerIdAndFromDateBetween(Date fromDate, Date toDate, Pageable pageable, String payerId) {
-//        return paymentRepository.getPaymentEntitiesByPayerIdAndFromDateBetween(fromDate,toDate,pageable,payerId).
-//                map(paymentEntity -> modelMapper.map(paymentEntity,ResponseModel.class));
-//    }
 
 
 }

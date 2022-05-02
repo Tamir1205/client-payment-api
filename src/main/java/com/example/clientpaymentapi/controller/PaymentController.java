@@ -4,6 +4,7 @@ import com.example.clientpaymentapi.feign.ClientFeign;
 import com.example.clientpaymentapi.model.DetailedResponse;
 import com.example.clientpaymentapi.model.RequestModel;
 import com.example.clientpaymentapi.model.ResponseModel;
+import com.example.clientpaymentapi.repository.PaymentEntity;
 import com.example.clientpaymentapi.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -66,10 +66,6 @@ public class PaymentController {
     return detailedResponse;
     }
 
-//    @GetMapping("/date")
-//    public Page<ResponseModel> getPaymentByDateOfPayment(@RequestParam Date dateOfPayment, Pageable pageable) {
-//        return paymentService.getPaymentByDateOfPayment(dateOfPayment, pageable);
-//    }
 
     @GetMapping("/receiver")
     public Page<ResponseModel> getPaymentByReceiverId(@RequestParam String receiverId, Pageable pageable) {
@@ -86,21 +82,14 @@ public class PaymentController {
         return paymentService.getAllPayments();
     }
 
-    @GetMapping("/range/{fromDate}/{toDate}")
-    public Page<ResponseModel> getPaymentsByRangeOfDates(@RequestParam String clientId, Pageable pageable,
-                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date fromDate,
-                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date toDate, LocalDate dateOfPayment) {
+    @GetMapping("/range/{fromDate}/{toDate}/{clientId}")
+    public List<PaymentEntity> getPaymentsByRangeOfDates(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate fromDate,
+                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate toDate,
+                                                         @PathVariable String clientId) {
 
-        return paymentService.getPaymentsByRange(fromDate, toDate, clientId, pageable);
+        return paymentService.getPaymentsByRange(fromDate, toDate, clientId);
     }
 
-//    private static RangeQueryBuilder getQueryBuilder(final String payerId, final Date fromDate, final Date toDate){
-//        return QueryBuilders.rangeQuery(payerId).gte(fromDate);
-//    }
-//    @GetMapping("/{fromDate}/{toDate}")
-//    public Page<ResponseModel> getPaymentsBetweenTwoDates(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @PathVariable  @DateTimeFormat(pattern = "yyyy-MM-dd")Date toDate, @RequestParam String payerId, Pageable pageable){
-//        return paymentService.getPaymentEntitiesByPayerIdAndFromDateBetween(fromDate,toDate,pageable,payerId);
-//    }
 
 
 }
