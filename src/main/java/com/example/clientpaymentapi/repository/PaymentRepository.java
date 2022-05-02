@@ -28,6 +28,7 @@ public interface PaymentRepository extends ElasticsearchRepository<PaymentEntity
 
     List<PaymentEntity> getPaymentEntitiesBy();
 
-    Page<ResponseModel> getPaymentEntitiesByDateOfPaymentIsBetween(Date fromDate, Date toDate, String payerId, Pageable pageable);
+    Page<ResponseModel> getPaymentEntitiesByFromDateAfterAndToDateBefore(Date fromDate, Date toDate, String payerId, Pageable pageable);
+
 
 }

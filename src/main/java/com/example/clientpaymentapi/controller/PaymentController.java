@@ -8,9 +8,11 @@ import com.example.clientpaymentapi.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -85,11 +87,11 @@ public class PaymentController {
     }
 
     @GetMapping("/range/{fromDate}/{toDate}")
-    public Page<ResponseModel> getPaymentsByRangeOfDates(@RequestParam String payerId, Pageable pageable,
+    public Page<ResponseModel> getPaymentsByRangeOfDates(@RequestParam String clientId, Pageable pageable,
                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date fromDate,
-                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date toDate) {
+                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable Date toDate, LocalDate dateOfPayment) {
 
-        return paymentService.getPaymentsByRange(fromDate, toDate, payerId, pageable);
+        return paymentService.getPaymentsByRange(fromDate, toDate, clientId, pageable);
     }
 
 //    private static RangeQueryBuilder getQueryBuilder(final String payerId, final Date fromDate, final Date toDate){
