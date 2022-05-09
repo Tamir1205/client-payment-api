@@ -19,13 +19,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-    private final RestHighLevelClient client;
+
     @Autowired
     private PaymentRepository paymentRepository;
-    @Autowired
-    public PaymentServiceImpl(RestHighLevelClient client){
-        this.client=client;
-    }
+
     static ModelMapper modelMapper = new ModelMapper();
 
     static {

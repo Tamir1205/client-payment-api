@@ -4,8 +4,7 @@ import com.example.clientpaymentapi.model.DetailedResponse;
 import com.example.clientpaymentapi.model.RequestModel;
 import com.example.clientpaymentapi.model.ResponseModel;
 import com.example.clientpaymentapi.repository.PaymentEntity;
-import com.example.clientpaymentapi.search.DTO;
-import org.apache.tomcat.jni.Local;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,7 +25,6 @@ public interface PaymentService {
 
     void deletePaymentById(String paymentId);
 
-    // Page<ResponseModel> getPaymentByDateOfPayment(Date dateOfPayment, Pageable pageable);
     Page<ResponseModel> countPaymentsByClientId(String clientId, Pageable pageable);
 
     Page<ResponseModel> getPaymentsByReceiverId(String receiverId, Pageable pageable);

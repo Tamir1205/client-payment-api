@@ -31,8 +31,5 @@ public class PaymentEntity {
     private Double amountOfPayment;
     @Field(type = FieldType.Date)
     private LocalDate dateOfPayment;
-    @Field(type = FieldType.Date)
-    private Date fromDate;
-    @Field(type = FieldType.Date)
-    private Date toDate;
+
 }
